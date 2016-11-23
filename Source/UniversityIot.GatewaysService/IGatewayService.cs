@@ -4,8 +4,8 @@ namespace UniversityIot.GatewaysService
 {
     public interface IGatewayService
     {
-        void RegisterGateway(User user, Gateway gateway);
+        Gateway RegisterGateway(User user, Gateway gateway);
 
-        void UnregisterGateway(User user, int gatewayId);
+        Gateway UnregisterGateway(User user, int gatewayId);
     }
 }

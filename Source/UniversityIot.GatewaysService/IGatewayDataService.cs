@@ -6,6 +6,6 @@ namespace UniversityIot.GatewaysService
     {
         Gateway CreateGateway(string gatewayDescription);
         Gateway GetGateway(int gatewayId);
-        void Update(Gateway gateway);
+        Gateway Save(Gateway gateway);
     }
 }

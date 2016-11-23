@@ -11,41 +11,43 @@ namespace UniversityIot.GatewaysService
     public class GatewayService : IGatewayService
     {
         IGatewayDataService dataService;
+        const int serialNumberRequiredLength = 16; 
 
         public GatewayService(IGatewayDataService dataService)
         {
             this.dataService = dataService;
         }
 
-        public void RegisterGateway(User user, Gateway gateway)
+        public Gateway RegisterGateway(User user, Gateway gateway)
         {
             if (gateway.Status.Equals(GatewayStatus.Unregistered))
             {
-                int serialNumber;
-
                 if (string.IsNullOrEmpty(gateway.SerialNumber))
                     gateway = CreateGateway(gateway.Description);
-                else if(gateway.SerialNumber.Length != 16 || int.TryParse(gateway.SerialNumber, out serialNumber))
-                    throw new GatewayServiceException("Serial number must contain exactly 16 digits");
+                else if (gateway.SerialNumber.Length != serialNumberRequiredLength || !gateway.SerialNumber.All(char.IsDigit))
+                    throw new IncorrectSerialNumberException("Serial number must contain exactly 16 digits");
 
-                user.GatewaysIds.Add(gateway.Id);
+                gateway.User = user;
                 gateway.Status = GatewayStatus.Registered;
-                dataService.Update(gateway);
+                return dataService.Save(gateway);
             }
             else
-                throw new GatewayServiceException("Gateway is already registered");
+                throw new GatewayAlreadyRegisteredException();
         }
 
-        public void UnregisterGateway(User user, int gatewayId)
+        public Gateway UnregisterGateway(User user, int gatewayId)
         {
             Gateway gateway = GetGateway(gatewayId);
 
-            if (gateway.Status.Equals(GatewayStatus.Registered))
-            {
-                user.GatewaysIds.Remove(gatewayId);
-                gateway.Status = GatewayStatus.Unregistered;
-                dataService.Update(gateway);
-            }
+            if (gateway == null)
+                throw new GatewayNotFoundException();
+
+            if (gateway.Status.Equals(GatewayStatus.Unregistered))
+                throw new GatewayUnregisteredException();
+
+            gateway.User = null;
+            gateway.Status = GatewayStatus.Unregistered;
+            return dataService.Save(gateway);
         }
 
         public Gateway CreateGateway(string gatewayDescription)
@@ -55,14 +57,12 @@ namespace UniversityIot.GatewaysService
 
         public Gateway GetGateway(int gatewayId)
         {
-            try
-            {
-                return dataService.GetGateway(gatewayId);
-            }
-            catch (GatewayServiceException ex)
-            {
-                throw new GatewayServiceException("Gateway doesn't exist");
-            }
+            Gateway gateway = dataService.GetGateway(gatewayId);
+
+            if (gateway == null)
+                throw new GatewayNotFoundException();
+
+            return gateway;
         }
     }
 }

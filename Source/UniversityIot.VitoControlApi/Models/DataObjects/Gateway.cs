@@ -15,5 +15,7 @@ namespace UniversityIot.VitoControlApi.Models.DataObjects
         public GatewayStatus Status { get; set; }
 
         public string SerialNumber { get; set; }
+
+        public User User { get; set; }
     }
 }

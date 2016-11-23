@@ -13,7 +13,5 @@ namespace UniversityIot.VitoControlApi.Models.DataObjects
 
         public string Password { get; set; }
 
-        public ICollection<int> GatewaysIds { get; set; }
-
     }
 }

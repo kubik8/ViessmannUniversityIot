@@ -139,7 +139,12 @@
     <Compile Include="Enums\ErrorType.cs" />
     <Compile Include="Enums\GatewayStatus.cs" />
     <Compile Include="Enums\ValidationErrorType.cs" />
+    <Compile Include="Exceptions\GatewayAlreadyExistsException.cs" />
+    <Compile Include="Exceptions\GatewayAlreadyRegisteredException.cs" />
+    <Compile Include="Exceptions\GatewayNotFoundException.cs" />
     <Compile Include="Exceptions\GatewayServiceException.cs" />
+    <Compile Include="Exceptions\GatewayUnregisteredException.cs" />
+    <Compile Include="Exceptions\IncorrectSerialNumberException.cs" />
     <Compile Include="Exceptions\UserAlreadyExistsException.cs" />
     <Compile Include="Exceptions\UserNotFoundException.cs" />
     <Compile Include="Global.asax.cs">

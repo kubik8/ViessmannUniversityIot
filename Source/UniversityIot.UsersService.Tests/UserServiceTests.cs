@@ -16,7 +16,7 @@ namespace UniversityIot.UsersService.Tests
         Mock<IUserDataService> dataServiceMock;
         User user;
 
-        [OneTimeSetUp]
+        [SetUp]
         public void TestSetup()
         {
             dataServiceMock = new Mock<IUserDataService>();
