@@ -6,7 +6,7 @@ namespace UniversityIot.UsersService
     {
         User AddUser(User user);
 
-        void DeleteUser(string username);
+        void DeleteUser(User user);
 
         User GetUser(string username);
     }

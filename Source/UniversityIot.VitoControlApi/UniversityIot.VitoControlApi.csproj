@@ -140,7 +140,8 @@
     <Compile Include="Enums\GatewayStatus.cs" />
     <Compile Include="Enums\ValidationErrorType.cs" />
     <Compile Include="Exceptions\GatewayServiceException.cs" />
-    <Compile Include="Exceptions\UserServiceException.cs" />
+    <Compile Include="Exceptions\UserAlreadyExistsException.cs" />
+    <Compile Include="Exceptions\UserNotFoundException.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

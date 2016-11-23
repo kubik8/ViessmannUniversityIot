@@ -15,44 +15,36 @@ namespace UniversityIot.UsersService
 
         public User CreateUser(string username, string password)
         {
-            try
-            {
-                User user = new User { Name = username, Password = password };
-                user = dataService.AddUser(user);
-                return user;
-            }
-            catch (UserServiceException ex)
-            {
-                throw new UserServiceException("User already exists");
-            }
+            User existingUser = dataService.GetUser(username);
+
+            if (existingUser != null)
+                throw new UserAlreadyExistsException();
+
+            User user = new User { Name = username, Password = password };
+            user = dataService.AddUser(user);
+            return user;
         }
 
         public bool DeleteUser(string username)
         {
-            try
-            {
-                dataService.DeleteUser(username);
-                return true;
-            }
-            catch (UserServiceException ex)
-            {
-                throw new UserServiceException("User doesn't exist");
-            }
+            User existingUser = dataService.GetUser(username);
+
+            if (existingUser == null)
+                throw new UserNotFoundException();
+
+            dataService.DeleteUser(existingUser);
+            return true;
         }
 
         public User GetUser(string username)
         {
-            try
-            {
-                return dataService.GetUser(username);
-            }
-            catch(UserServiceException ex)
-            {
-                throw new UserServiceException("User doesn't exist");
-            }
-            
-        }
+            User user = dataService.GetUser(username);
 
+            if (user == null)
+                throw new UserNotFoundException();
+
+            return user;
+        }
 
     }
 }

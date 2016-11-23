@@ -15,8 +15,6 @@ namespace UniversityIot.UsersService.Tests
     {
         Mock<IUserDataService> dataServiceMock;
         User user;
-        string userDoesNotExistMessage = "User doesn't exist";
-        string userAlreadyExistsMessage = "User already exists";
 
         [OneTimeSetUp]
         public void TestSetup()
@@ -44,33 +42,28 @@ namespace UniversityIot.UsersService.Tests
         [Test]
         public void GetUserByName_WhenUserNotExist_ShouldFail()
         {            
-            dataServiceMock.Setup(x => x.GetUser(user.Name)).Throws<UserServiceException>();
+            dataServiceMock.Setup(x => x.GetUser(user.Name)).Returns((User) null);
             UserService userService = new UserService(dataServiceMock.Object);
 
-            Exception exception = Assert.Throws<UserServiceException>(() => userService.GetUser(user.Name));
-
-            Assert.AreEqual(userDoesNotExistMessage, exception.Message);
+            Assert.Throws<UserNotFoundException>(() => userService.GetUser(user.Name));
         }
 
         [Test]
         public void CreateUser_WithExistingName_ShouldFail()
         {
-            dataServiceMock.Setup(x => x
-                .AddUser(It.Is<User>(u => u.Name == user.Name && u.Password == user.Password) ))
-                .Throws<UserServiceException>();
+            dataServiceMock.Setup(x => x.GetUser(user.Name)).Returns(user);
             UserService userService = new UserService(dataServiceMock.Object);
 
-            Exception exception = Assert.Throws<UserServiceException>(() => userService.CreateUser(user.Name, user.Password));
-
-            Assert.AreEqual(userAlreadyExistsMessage, exception.Message);
+            Assert.Throws<UserAlreadyExistsException>(() => userService.CreateUser(user.Name, user.Password));
         }
 
         [Test]
         public void CreateUser_WithNewName_ShouldSuccess()
         {
+            dataServiceMock.Setup(x => x.GetUser(user.Name)).Returns((User) null);
             dataServiceMock.Setup(x => x
-            .AddUser(It.Is<User>(u => u.Name == user.Name && u.Password == user.Password)))
-            .Returns(user);
+                .AddUser(It.Is<User>(u => u.Name == user.Name && u.Password == user.Password)))
+                .Returns(user);
             UserService userService = new UserService(dataServiceMock.Object);
 
             User resultUser = userService.CreateUser(user.Name, user.Password);
@@ -79,8 +72,9 @@ namespace UniversityIot.UsersService.Tests
         }
 
         [Test]
-        public void DeleteUser_WhenUserExists_ShouldFail()
+        public void DeleteUser_WhenUserExists_ShouldSuccess()
         {
+            dataServiceMock.Setup(x => x.GetUser(user.Name)).Returns(user);
             UserService userService = new UserService(dataServiceMock.Object);
 
             bool result = userService.DeleteUser(user.Name);
@@ -91,12 +85,10 @@ namespace UniversityIot.UsersService.Tests
         [Test]
         public void DeleteUser_WhenUserNotExist_ShouldFail()
         {
-            dataServiceMock.Setup(x => x.DeleteUser(user.Name)).Throws<UserServiceException>();
+            dataServiceMock.Setup(x => x.GetUser(user.Name)).Returns((User)null);
             UserService userService = new UserService(dataServiceMock.Object);
 
-            Exception exception = Assert.Throws<UserServiceException>(() => userService.DeleteUser(user.Name));
-
-            Assert.AreEqual(userDoesNotExistMessage, exception.Message);
+            Assert.Throws<UserNotFoundException>(() => userService.DeleteUser(user.Name));
         }
     }
 }
