@@ -74,6 +74,14 @@
     <Compile Include="Migrations\201611241536430_UserMigration.Designer.cs">
       <DependentUpon>201611241536430_UserMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612081232322_UserConstraints.cs" />
+    <Compile Include="Migrations\201612081232322_UserConstraints.Designer.cs">
+      <DependentUpon>201612081232322_UserConstraints.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612081240229_UserGatewaysReference.cs" />
+    <Compile Include="Migrations\201612081240229_UserGatewaysReference.Designer.cs">
+      <DependentUpon>201612081240229_UserGatewaysReference.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserGateway.cs" />
@@ -95,6 +103,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201611241536430_UserMigration.resx">
       <DependentUpon>201611241536430_UserMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612081232322_UserConstraints.resx">
+      <DependentUpon>201612081232322_UserConstraints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612081240229_UserGatewaysReference.resx">
+      <DependentUpon>201612081240229_UserGatewaysReference.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
