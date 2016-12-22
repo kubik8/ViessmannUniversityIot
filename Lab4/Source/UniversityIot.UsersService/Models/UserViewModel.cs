@@ -17,6 +17,7 @@
 
         public string CustomerNumber { get; set; }
 
+        [JsonIgnore]
         public string Password { get; set; }
 
         public ICollection<UserGatewayViewModel> UserGateways { get; set; }
