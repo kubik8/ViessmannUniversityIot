@@ -53,7 +53,7 @@ namespace University.Selenium.Framework.Pages
         {
             filterInstallationInput.SendKeys(installationName);
             this.filterInstallationInput.SendKeys(Keys.Enter);
-            Thread.Sleep(500);
+            Thread.Sleep(700);
 
             var allVisibleInstallations = Driver.webDriver.FindElements(By.XPath(this.allVisibleInstallations));
 

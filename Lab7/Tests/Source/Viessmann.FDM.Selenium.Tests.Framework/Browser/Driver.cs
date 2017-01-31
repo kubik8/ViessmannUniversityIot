@@ -25,6 +25,11 @@ namespace University.Selenium.Framework.Browser
             webDriver.Url = Settings.baseUrl;
         }
 
+        public static void goToMainPage()
+        {
+            webDriver.Url = Settings.mainPageUrl;
+        }
+
         public static void exit()
         {
             webDriver.Close();
